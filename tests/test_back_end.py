@@ -2,7 +2,7 @@ import unittest
 
 from flask import abort, url_for
 from flask_testing import TestCase
-
+from os import getenv
 from application import app, db
 from application.models import Users, Posts
 class TestBase(TestCase):
@@ -11,7 +11,7 @@ class TestBase(TestCase):
 
         # pass in configurations for test database
         config_name = 'testing'
-        app.config.update['SQLALCHEMY_DATABASE_URI'] = getenv('TEST_DATABASE_URI')
+        app.config['SQLALCHEMY_DATABASE_URI'] = getenv('TEST_DATABASE_URI')
         return app
 
     def setUp(self):
@@ -49,3 +49,14 @@ class TestViews(TestBase):
         """
         response = self.client.get(url_for('home'))
         self.assertEqual(response.status_code, 200)
+
+class TestRedirect(TestBase):    
+
+    def test_redirecttologin_view(self):
+        """
+        Test redirect
+        """
+        target_url = url_for('post')
+        redirect_url = url_for('login', next=target_url)
+        response = self.client.get(target_url)
+        self.assertRedirects(response, redirect_url)
