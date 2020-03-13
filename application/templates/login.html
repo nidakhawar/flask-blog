@@ -1,7 +1,5 @@
-<!-- this is a very simple html file to demonstrate the template functionality -->
 {% extends "layout.html" %}
 {% block body_content %}
-<p>login in to this app</p>
 <div class='form'>
     <form method='POST' action=''>
         {{ form.hidden_tag() }}
@@ -16,9 +14,7 @@
                 </div>
             {% endif %}
         </div>
-    
-        <!--Password and Check Password fields-->
-
+        <br>
         <div class='form_group'>
             {{ form.password.label }}
             {{ form.password }}
